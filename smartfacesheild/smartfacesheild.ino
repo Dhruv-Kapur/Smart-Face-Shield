@@ -15,9 +15,12 @@ void setup() {
 }
 
 void loop() {
-  Serial.print(temperature());
-  Serial.print(",");
-  Serial.println(air_quality());
+  int aqi = air_quality();
+  delay(500);
+  int temp = temperature();
+  //Serial.print();
+  //Serial.print(",");
+  Serial.println(aqi);
 }
 
 int air_quality(){

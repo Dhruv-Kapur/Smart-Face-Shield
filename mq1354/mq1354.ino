@@ -1,25 +1,22 @@
-int smokeA0 = A5;
-int addedone = 0 ;
-int counter = 0 ;
+int aqipin = A5;
 
 void setup() {
-  pinMode(smokeA0, INPUT);
+  pinMode(aqipin, INPUT);
   Serial.begin(9600);
 }
 
 void loop() {
-  int percentage = (analogRead(smokeA0)/1024)*100;
- 
-  if (counter < 5 ){
-    addedone = addedone + percentage ;
-    counter ++;
-  } 
-  if (counter == 5 ) {
-    Serial.println(addedone/5);
-    counter = 0;
-    addedone = 0;
+  Serial.println(air_quality());
+}
+
+int air_quality(){
+  int i = 0;
+  int sum = 0;
+  while (i < 5) {
+    sum = sum + analogRead(aqipin);
+    i++;
+    delay(100); 
   }
-  
-  delay(100);
-  
+  int average = sum/5 ;
+  return average;
 }
