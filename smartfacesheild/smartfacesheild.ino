@@ -3,7 +3,7 @@
 #include <Adafruit_MLX90614.h>
 
 //Variables
-int aqipin = A5;
+int aqipin = A0;
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
 
@@ -16,11 +16,11 @@ void setup() {
 
 void loop() {
   int aqi = air_quality();
-  delay(500);
   int temp = temperature();
-  //Serial.print();
-  //Serial.print(",");
+  Serial.print(temp);
+  Serial.print(",");
   Serial.println(aqi);
+
 }
 
 int air_quality(){
