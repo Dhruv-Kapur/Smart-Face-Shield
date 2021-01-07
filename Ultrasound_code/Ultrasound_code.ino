@@ -20,10 +20,13 @@ void loop() {
   duration = pulseIn(echoPin, HIGH);
   distance = (duration*.0343)/2;
 
-  if (distane > 1800) {
-    Serial.println("okay");
+  if (distance > 1800) {
+    Serial.print("okay : ");
+    Serial.println(distance);
   } else {
-    Serial.println("too lose");
+    Serial.print("too close : ");
+    Serial.println(distance);
+
   }
   delay(500);
   
