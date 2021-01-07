@@ -1,34 +1,30 @@
 
-#define echoPin 2 // attach pin D2 Arduino to pin Echo of HC-SR04
-#define trigPin 3 //attach pin D3 Arduino to pin Trig of HC-SR04
+const int trigPin = 9;
+const int echoPin = 10;
 
-// defines variables
-long duration; // variable for the duration of sound wave travel
-int distance; // variable for the distance measurement
+float duration, distance;
 
 void setup() {
-  pinMode(buzzer, OUTPUT); // Set buzzer - pin 9 as an output
-  pinMode(trigPin, OUTPUT); // Sets the trigPin as an OUTPUT
-  pinMode(echoPin, INPUT); // Sets the echoPin as an INPUT
-  Serial.begin(9600); // // Serial Communication is starting with 9600 of baudrate speed
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  Serial.begin(9600);
 }
+
 void loop() {
-  // Clears the trigPin condition
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
-  // Sets the trigPin HIGH (ACTIVE) for 10 microseconds
   digitalWrite(trigPin, HIGH);
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
-  // Reads the echoPin, returns the sound wave travel time in microseconds
+
   duration = pulseIn(echoPin, HIGH);
-  // Calculating the distance
-  distance = duration * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
-  // Checks if the user is farther than 6 feet from another object/person
-  while distance => 2000 {
-    tone(buzzer, 1000); // Send 1KHz sound signal...
-    delay(1000);        // ...for 1 sec
-    noTone(buzzer);     // Stop sound...
-    delay(1000);        // ...for 1 sec
+  distance = (duration*.0343)/2;
+
+  if (distane > 1800) {
+    Serial.println("okay");
+  } else {
+    Serial.println("too lose");
   }
+  delay(500);
+  
 }
