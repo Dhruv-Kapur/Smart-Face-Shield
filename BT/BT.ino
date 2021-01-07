@@ -10,8 +10,7 @@ void setup()
 } 
 void loop() 
 { 
-  //String nums = String(random(0,999)) + "," + String(random(0,999))+ "," + String(random(0,999))+ "," + String(random(0,999));
-  String nums = "1,2,3,4" ;
+  String nums = String(random(0,999)) + "," + String(random(0,999))+ "," + String(random(0,999))+ "," + String(random(0,999));
   BT.println(nums);
   Serial.println(nums);
   delay(500);
