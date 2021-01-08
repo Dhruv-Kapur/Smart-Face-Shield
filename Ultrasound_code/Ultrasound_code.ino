@@ -21,12 +21,9 @@ void loop() {
   distance = (duration*.0343)/2;
 
   if (distance > 1800) {
-    Serial.print("okay : ");
-    Serial.println(distance);
+    Serial.print("okay");
   } else {
-    Serial.print("too close : ");
-    Serial.println(distance);
-
+    Serial.print("too close");
   }
   delay(500);
   
