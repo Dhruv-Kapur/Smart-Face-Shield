@@ -1,4 +1,4 @@
-int aqipin = A5;
+int aqipin = A3;
 
 void setup() {
   pinMode(aqipin, INPUT);
