@@ -21,10 +21,10 @@ void loop() {
   distance = (duration*.0343)/2;
 
   if (distance > 1800) {
-    Serial.print("okay : ");
+    Serial.print("You can come closer : ");
     Serial.println(distance);
   } else {
-    Serial.print("too close : ");
+    Serial.print("Go back : ");
     Serial.println(distance);
 
   }
