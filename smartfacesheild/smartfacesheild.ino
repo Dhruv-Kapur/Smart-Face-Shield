@@ -1,5 +1,16 @@
 #include <Wire.h>
 #include <Adafruit_MLX90614.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 32 // OLED display height, in pixels
+
+// Declaration for an SSD1306 display connected to I2C (SDA, SCL pins)
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+
+#include <SoftwareSerial.h> 
+SoftwareSerial BT(3, 4); // RX | TX 
 
 //Variables
 int aqipin = A0;
@@ -16,18 +27,28 @@ void setup() {
   mlx.begin(); 
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
-  Serial.begin(9600); 
+
+  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3D for 128x64
+    Serial.println(F("SSD1306 allocation failed"));
+    for(;;);
+  }
+  delay(2000);
+  display.clearDisplay();
+
+  display.setTextSize(3);
+  display.setTextColor(WHITE);
+  display.setCursor(0, 10); 
+
+  BT.begin(9600); 
 }
 
 void loop() {
   int aqi = air_quality();
   int temp = temperature();
   int us = ultra_sound();
-  Serial.print(temp);
-  Serial.print(",");
-  Serial.print(aqi);
-  Serial.print(",");
-  Serial.print(us);
+  oled(temp, us, 92);
+  BlueTooth(temp, aqi , 90, 95);
+  delay(1000);
 
 }
 
@@ -66,11 +87,33 @@ int ultra_sound (){
   distance = (duration*.0343)/2;
 
   return distance ;
-  /*
-  if (distance > 1800) {
-    Serial.println("OK");
+}
+
+int oled (int mlx, int ultras, int bo) {
+  if ( mlx > 36 ) {
+     display.setTextSize(3);
+     display.println("FEVER");
+  } else if ( ultras < 1800) {
+    display.setTextSize(3);
+    display.println("6 FT");
+  } else if (bo < 90) {
+    display.setTextSize(3);
+    display.println("LOW O2");
   } else {
-    Serial.println("TOO CLOSE");
+    display.setTextSize(3);
+    display.println("OKAY");
   }
-  */
+  display.clearDisplay();
+  display.display(); 
+
+}
+
+int BlueTooth (int temp_bt, int PPM_bt, int BO_bt, int HR_bt){
+  int index = 0 ;
+  while (index < 8){
+   String nums = String(temp_bt) + "," + String(PPM_bt) + "," + String(BO_bt)+ "," + String(HR_bt);
+   BT.println(nums);
+   delay(500);
+   index++ ; 
+  }
 }
