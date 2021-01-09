@@ -49,8 +49,6 @@ void setup()
   Serial.println("Place your index finger on the sensor with steady pressure.");
 
   particleSensor.setup(); //Configure sensor with default settings
-  particleSensor.setPulseAmplitudeRed(0x0A); //Turn Red LED to low to indicate sensor is running
-  particleSensor.setPulseAmplitudeGreen(0); //Turn off Green LED
 }
 
 void loop()
@@ -68,6 +66,7 @@ void loop()
       lastBeat = millis();
   
       beatsPerMinute = 60 / (delta / 1000.0);
+      Serial.println(beatsPerMinute);
       if (irValue > 50000){
         sum = sum + beatsPerMinute;
         freq++;
@@ -84,6 +83,6 @@ void loop()
   Serial.print(beatsPerMinute);
   */
 
-  Serial.println(sum/freq);
+  //Serial.println(sum/freq);
   
 }
