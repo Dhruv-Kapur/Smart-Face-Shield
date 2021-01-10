@@ -22,7 +22,10 @@ void setup() {
   display.setTextColor(WHITE);
   display.setCursor(0, 10);
   // Display static text
-  c
+  display.println("OKAY");
+  display.display(); 
+
+
 }
 
 void loop() {
