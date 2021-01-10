@@ -13,11 +13,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 SoftwareSerial BT(3, 4); // RX | TX 
 
 //Variables
-int aqipin = A0;
 Adafruit_MLX90614 mlx = Adafruit_MLX90614();
-const int trigPin = 9;
-const int echoPin = 10;
-int button_pin = 13;
 float duration, distance;
 
 int aqi = 0 ;
@@ -26,12 +22,12 @@ int us = 200;
 
 void setup() {
   // put your setup code here, to run once:
-  pinMode(aqipin, INPUT);
+  pinMode(A0, INPUT);
   Serial.begin(9600);
   mlx.begin(); 
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
-  pinMode(button_pin, INPUT);
+  pinMode(9, OUTPUT);
+  pinMode(10, INPUT);
+  pinMode(13, INPUT);
   if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) { // Address 0x3D for 128x64
     Serial.println(F("SSD1306 allocation failed"));
     for(;;);
@@ -47,7 +43,7 @@ void setup() {
 }
 
 void loop() {
-  if (digitalRead(button_pin) == HIGH ) {
+  if (digitalRead(13) == HIGH ) {
     aqi = air_quality();
     temp = temperature();
     BlueTooth(temp, aqi , 90, 95);
@@ -55,7 +51,6 @@ void loop() {
 
   int us = ultra_sound();
   oled(temp, us, 92);
-  Serial.println(us);
   delay(1000);
 
 }
@@ -64,7 +59,7 @@ int air_quality(){
   int i = 0;
   int sum = 0;
   while (i < 5) {
-    sum = sum + analogRead(aqipin);
+    sum = sum + analogRead(A0);
     i++;
     delay(100); 
   }
@@ -85,32 +80,31 @@ int temperature (){
 }
 
 int ultra_sound (){
-  digitalWrite(trigPin, LOW);
+  digitalWrite(9, LOW);
   delayMicroseconds(2);
-  digitalWrite(trigPin, HIGH);
+  digitalWrite(9, HIGH);
   delayMicroseconds(10);
-  digitalWrite(trigPin, LOW);
+  digitalWrite(9, LOW);
 
-  duration = pulseIn(echoPin, HIGH);
+  duration = pulseIn(10, HIGH);
   distance = (duration*.0343)/2;
-
-  return distance ;
+  return distance;
 }
 
 int oled (int mlx, int ultras, int bo) {
   display.clearDisplay(); // clear the buffer
   if ( mlx > 36 ) {
      display.setTextSize(3);
-     display.println("FEVER");
+     display.println(F("FEVER"));
   } else if ( ultras < 180) {
     display.setTextSize(3);
-    display.println("6 FT");
+    display.println(F("6 FT"));
   } else if (bo < 90) {
     display.setTextSize(3);
-    display.println("LOW O2");
+    display.println(F("LOW O2"));
   } else {
     display.setTextSize(3);
-    display.println("OKAY");
+    display.println(F("OKAY"));
   }
   display.setTextSize(3);
   display.setTextColor(WHITE);
@@ -122,7 +116,7 @@ int oled (int mlx, int ultras, int bo) {
 int BlueTooth (int temp_bt, int PPM_bt, int BO_bt, int HR_bt){
   int index = 0 ;
   while (index < 8){
-   String nums = String(temp_bt) + "," + String(PPM_bt) + "," + String(BO_bt)+ "," + String(HR_bt);
+   String nums = String(temp_bt) + F(",") + String(PPM_bt) + F(",") + String(BO_bt)+ F(",") + String(HR_bt);
    BT.println(nums);
    delay(500);
    index++ ; 
