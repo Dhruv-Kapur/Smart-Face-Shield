@@ -47,11 +47,14 @@ void setup()
 
 void loop()
 {
-  hrandspo();
-  Serial.write(bloodav);
-  delay(100);
-  Serial.write(heartav);
-  while(1){}
+  if(Serial.available() > 0){
+      Serial.println(Serial.read());
+      hrandspo();
+      Serial.write(bloodav);
+      delay(100);
+      Serial.write(heartav);
+    }
+  
 }
 
 int hrandspo(){
