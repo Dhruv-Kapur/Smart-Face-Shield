@@ -47,14 +47,10 @@ void setup()
 
 void loop()
 {
-  if(Serial.available() > 0){
-      Serial.println(Serial.read());
-      hrandspo();
-      Serial.write(bloodav);
-      delay(100);
-      Serial.write(heartav);
-    }
-  
+    hrandspo();
+    Serial.write(bloodav);
+    delay(100);
+    Serial.write(heartav);
 }
 
 int hrandspo(){
@@ -70,7 +66,6 @@ int hrandspo(){
     irBuffer[i] = particleSensor.getIR();
     particleSensor.nextSample(); //We're finished with this sample so move to next sample
 
-    //Serial.println("...");
   }
 
   //calculate heart rate and SpO2 after first 100 samples (first 4 seconds of samples)
